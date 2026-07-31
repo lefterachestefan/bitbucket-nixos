@@ -1,16 +1,12 @@
-FROM nixos/nix:2.13.2
-
-# Install git
-RUN set -x && \
-    nix-channel --update && \
-    nix-env -iA nixpkgs.git && \
-    nix-collect-garbage
+FROM nixos/nix:2.35.1
 
 # Create the necessary symlinks for Bitbucket
-RUN set -x && \
-    ln -s $(which echo) /bin && \
-    ln -s $(which cat) /bin && \
-    ln -s $(which mkfifo) /usr/bin
+RUN ln -sf "$(which echo)" /bin/echo \
+    && ln -sf "$(which cat)" /bin/cat \
+    && ln -sf "$(which mkfifo)" /usr/bin/mkfifo
 
 # Enable flakes
-RUN echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+RUN printf '%s\n' \
+    "experimental-features = nix-command flakes" \
+    "accept-flake-config = true" \
+    >> /etc/nix/nix.conf
