@@ -1,4 +1,4 @@
-FROM nixos/nix:2.35.1
+FROM nixos/nix:2.35.3
 
 # Create the necessary symlinks for Bitbucket
 RUN ln -sf "$(which echo)" /bin/echo \
